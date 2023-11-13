@@ -53,6 +53,7 @@ def main():
             shared_result_dict = manager.dict(
                 {i: 0 for i, _ in enumerate(target_strings)}
             )
+            lock = manager.Lock()
 
             # Create a Pool of workers
             with multiprocessing.Pool(WORKERS) as pool:
@@ -60,7 +61,7 @@ def main():
                 pool.starmap(
                     generate_permutations_with_buffer,
                     [
-                        (s, target_strings, shared_result_dict, manager.Lock())
+                        (s, target_strings, shared_result_dict, lock)
                         for s in words_list
                     ],
                 )
