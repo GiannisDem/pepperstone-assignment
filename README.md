@@ -142,8 +142,8 @@ At high level, here are the steps the project has implemented
 2) Spawn a pool of workers responsible for running the `generate_permutations` module for each word in the dictionary file
     - Start calculating the permutations of the word
     - Utilize a buffer mechanism to store permutation in batches. Use this mechanism to limit the memory footprint.
-    - When the buffer is full or there are no more permutations to generate, call the process_permutations module
-    - The process_permutation module iterates the buffer and checks whether each permutation exists in the target strings and returns the results
+    - When the buffer is full or there are no more permutations to generate, call the `process_permutations` module
+    - The `process_permutations` module iterates the buffer and checks whether each permutation exists in the target strings and returns the results
     - If there are more permutations to generate, iterate through the above steps until all permutations are processed
     - Return the results of the process
 3) When all spawn processes are finished print the aggregated result to the user
@@ -238,7 +238,7 @@ At this point, depending on the length of the substring the number of permutatio
 
 For this reason we are using a buffer mechanism where we store a configurable number of permutations (**buffer_size**). 
 
-Once the buffer is full we send the permutations to the process_permutation module. When the processing of the buffer is finished we store the intermediary results and continue with the generation of the remaining permutations. We continue this process until all permutations are generated and processed.
+Once the buffer is full we send the permutations to the `process_permutations` module. When the processing of the buffer is finished we store the intermediary results and continue with the generation of the remaining permutations. We continue this process until all permutations are generated and processed.
 
 > [!NOTE]
 > Depending on the machine resources we can configure the amount of memory each process will consume by adjusting the buffer size through the config.ini file.
@@ -259,12 +259,6 @@ If a match is found the permutation is added in a dictionary which is shared bet
     Returns:
         Dict[int, Set[str]]: The update version of the found_dict containing any new matching permutations.
 ```
-
-Here we accept as input the calculated permutations for all words from the `calculate_permutations` module. Since we have a nested structure List[Sets] we iterate twice to get each individual permutation. Then we check their existence in the long string using the `IN` operator, if it exists we add it to a new Set thus making sure even if it exists multiple times will only count it once.
-
-Finally, we sum all the occurrences per word (either in original or scrambled form) and return the result as an integer.
-
-The above module is called for each long string in the input file.
 
 Here we accept as inputs the buffer from the `generate_permutations` module, the list of target strings and a dictionary that stores the results of previous batches.
 
