@@ -306,3 +306,18 @@ with multiprocessing.Manager() as manager:
                     ],
                 )
 ```
+
+# Update (21/11/23)
+
+There is a much simplier/faster method for finding whether a word in its original or scrambled form exists in a string rather than the bruteforce method of generating every permutation of the word.
+
+__Brief description__
+
+Iterate the input string and find substrings equal to the length of the dictionary word.
+Then sort the inner characters for both the original word and the substring.
+
+Finally use the below evaluation logic to find if either match, if they do match store the substring in a set in order to avoid counting duplicates:
+
+```
+if substring == word or sorted(substring) == sorted(word)
+```
